@@ -1,8 +1,16 @@
+/**
+* This class controls the gameplay. 
+* Checks win lost conditions and moves the game forward.
+*/
 class IcosianGame {
-    field DrawIcosian icosian;
-    field int seed;
-    field boolean won,quit;
+    field DrawIcosian icosian; // Game board
+    field int seed; // random seed to initilize 5 points
+    field boolean won,quit; // exit controls
 
+    /**
+    * Construct a new object and populate the fields.
+    * sed - random seed
+    */
     constructor IcosianGame new(int sed) {
         let icosian = DrawIcosian.new();
         let seed = sed;
@@ -10,20 +18,25 @@ class IcosianGame {
         return this;
     }
 
+    /**
+    * Starts the game and controls its execution.
+    */
     method void run() {
-        var int key;
-        var int last;
-        var boolean isn;
-        var boolean plk;
-        var int move;
-        var String path;
-        var boolean clk;
+        var int key; // keyboard input
+        var int last; // last point entered
+        var boolean isn; // is neighbour
+        var boolean plk; // is a play key
+        var int move; // number of moves
+        var String path; // Hamiltonian path taken
+        var boolean clk; // new point or visited point
+
         let quit = false;
         let move = 15;
         let path = drawInitial(seed);
         let last = path.charAt(4)-65;
         do drawPartition();
         do icosian.draw();
+
         while(~quit) {
             do printInfo(move,path);
             while(key = 0) {
@@ -34,6 +47,7 @@ class IcosianGame {
                 let clk = keyCheck(path,key,move);
                 let key = key - 65;
                 let isn = icosian.isNeighbour(last,key);
+
                 if(isn & ~clk){
                     do icosian.plotLine(last,key);
                     let last = key;
@@ -48,6 +62,7 @@ class IcosianGame {
             }else {
                 let quit = true;
             }
+
             while(~(key = 0)){
                 let key = Keyboard.keyPressed();
             }  
@@ -55,12 +70,18 @@ class IcosianGame {
         return;
     }
 
+    /**
+    * Draws initial 5 points with given seed.
+    * seed - given random seed
+    */
     method String drawInitial(int seed) {
         var int s;
         var String initial;
+
         let initial = String.new(21);
         let s = 0;
         let initial = initial.appendChar(65+seed);
+
         while(s < 4){
             do icosian.plotLine(seed+s,seed+s+1);
             let initial = initial.appendChar(65+seed+s+1);
@@ -69,11 +90,20 @@ class IcosianGame {
         return initial;
     }
 
+    /**
+    * Checks if a point is newly added or visited before.
+    * Also controls win and loss condition.
+    * pathe - Hamiltonian path covered
+    * key - current point
+    * move - number of moves
+    */
     method boolean keyCheck(String pathe, char key, int move){
         var int len,k;
         var boolean check;
+
         let len = pathe.length();
         let k = 0;
+
         do Output.moveCursor(19,32);
         while((k < len) & ~check){
             if(pathe.charAt(k)=key){
@@ -98,6 +128,7 @@ class IcosianGame {
             }
             let k = k+1;
         }
+
         if(check){
             do Output.printString("  Already visited the point :| ");
         }else{
@@ -106,6 +137,11 @@ class IcosianGame {
         return check;
     }
 
+    /**
+    * Prints useful information onto game board
+    * moves - number of moves remaining
+    * path - Hamiltonian path covered
+    */
     method void printInfo(int moves, String path){
         do Output.moveCursor(14,49);
         do Output.printString("   ");
@@ -116,6 +152,7 @@ class IcosianGame {
         return;
     }
 
+    // Draws the partiion and the outline of the game board
     method void drawPartition() {
         var int j;
         let j = 0;
@@ -169,6 +206,9 @@ class IcosianGame {
         return;
     }
 
+    /**
+    * checks if a key is playkey or non-play key
+    */
     method boolean playKey(int key) {
         if(key > 64){
             if(key < 85) {
@@ -180,7 +220,10 @@ class IcosianGame {
             return false;
         }
     }
-    
+
+    /**
+    * Destructor of the class
+    */
     method void dispose(){
         do Screen.clearScreen();
         do icosian.dispose();
