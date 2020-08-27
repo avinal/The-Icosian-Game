@@ -1,8 +1,17 @@
+/**
+* DrawIcosian class controls the drawing of points and edges 
+* dotted lines etc. This is similiar to game board.
+*/
 class DrawIcosian {
-    field PointVector points;
+    field PointVector points; // List of points
 
+    /**
+    * Initilizes new object of the class and populates with hard
+    * coded values, please do not change these values as they are
+    * manually adjusted for best result.
+    */
     constructor DrawIcosian new() {
-        let points = PointVector.new(20);
+        let points = PointVector.new(20); 
 
         do points.set(0,65,31,1,7,4,8,1);           // A
         do points.set(1,192,31,0,2,9,24,1);         // B
@@ -24,9 +33,14 @@ class DrawIcosian {
         do points.set(17,128,81,16,18,8,16,8);      // R
         do points.set(18,159,109,17,19,10,18,10);   // S
         do points.set(19,147,144,15,18,12,17,12);   // T
+
         return this;
     }
 
+    /**
+    * Draws points on the canvas. 
+    * dc - decides that labels should be drawn or not
+    */
     method void plotPoints(boolean dc) {
         var int i;
         var Array pos, charPos;
@@ -44,6 +58,10 @@ class DrawIcosian {
         return;
     }
 
+    /**
+    * Draws edges between two points.
+    * pointa, pointb - points to be used to draw edge between them
+    */
     method void plotLine(int pointa, int pointb) {
         var Array aa;
         var Array bb;
@@ -53,7 +71,10 @@ class DrawIcosian {
         return;
     }
 
-
+    /**
+    * Draws dashed lines between two points. Uses recurcive routine
+    * pointa, pointb - points to be used to draw line between them
+    */
     method void drawDashedLine(int pointa, int pointb) {
         var Array aa, bb;
         let aa = points.getPoint(pointa);
@@ -62,6 +83,9 @@ class DrawIcosian {
         return;
     }
 
+    /**
+    * Draws the whole game board with points and dotted edges.
+    */
     method void draw() {
         var int j;
         do plotPoints(true);
@@ -84,6 +108,10 @@ class DrawIcosian {
         return;
     }
 
+    /**
+    * Check if two points are neighbours or not.
+    * p1, p2 - points to be checked for adjecency
+    */
     method boolean isNeighbour(int p1, int p2) {
         var Array check;
         let check = points.getNeighbours(p1);
@@ -102,6 +130,11 @@ class DrawIcosian {
         }
     }
 
+    /**
+    * Recurcively finds mid points between two points, later used 
+    * to draw dotted lines.
+    * x1, y1, x2, y2 - coordinates of two points
+    */
     method void drawMid(int x1, int y1, int x2, int y2) {
         var int midx;
         var int midy;
@@ -119,6 +152,10 @@ class DrawIcosian {
         return;
     }
 
+    /**
+    * Finds distance between two points.
+    * x1, y1, x2, y2 - coordinates of two points
+    */
     method int length(int x1, int y1, int x2, int y2) {
         var int dx, dy;
         var int len;
@@ -138,6 +175,10 @@ class DrawIcosian {
         return len;
     }
 
+    /**
+    * Class destructor
+    * releases allocated memory
+    */
     method void dispose(){
         do points.dispose();
         do Memory.deAlloc(this);
