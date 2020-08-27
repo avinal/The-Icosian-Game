@@ -40,7 +40,7 @@ class SplashScreen {
         do Output.println();
         do Output.printString(" Source Code is available at:-");
         do Output.println();
-        do Output.printString("");
+        do Output.printString(" https://github.com/avinal/The-Icosian-Game");
         do Output.println();
         do Output.printString("                  Press any Key to Start !                     ");
         return;
