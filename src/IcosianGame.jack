@@ -1,0 +1,190 @@
+class IcosianGame {
+    field DrawIcosian icosian;
+    field int seed;
+    field boolean won,quit;
+
+    constructor IcosianGame new(int sed) {
+        let icosian = DrawIcosian.new();
+        let seed = sed;
+        let won = false;
+        return this;
+    }
+
+    method void run() {
+        var int key;
+        var int last;
+        var boolean isn;
+        var boolean plk;
+        var int move;
+        var String path;
+        var boolean clk;
+        let quit = false;
+        let move = 15;
+        let path = drawInitial(seed);
+        let last = path.charAt(4)-65;
+        do drawPartition();
+        do icosian.draw();
+        while(~quit) {
+            do printInfo(move,path);
+            while(key = 0) {
+                let key = Keyboard.keyPressed();
+            }
+            let plk = playKey(key);
+            if(plk){
+                let clk = keyCheck(path,key,move);
+                let key = key - 65;
+                let isn = icosian.isNeighbour(last,key);
+                if(isn & ~clk){
+                    do icosian.plotLine(last,key);
+                    let last = key;
+                    let move = move - 1;
+                    let path = path.appendChar(key+65);
+                }else {
+                    if(~clk){
+                        do Output.moveCursor(19,32);
+                        do Output.printString(" Not reachable point maybe! ");
+                    }
+                }
+            }else {
+                let quit = true;
+            }
+            while(~(key = 0)){
+                let key = Keyboard.keyPressed();
+            }  
+        }
+        return;
+    }
+
+    method String drawInitial(int seed) {
+        var int s;
+        var String initial;
+        let initial = String.new(21);
+        let s = 0;
+        let initial = initial.appendChar(65+seed);
+        while(s < 4){
+            do icosian.plotLine(seed+s,seed+s+1);
+            let initial = initial.appendChar(65+seed+s+1);
+            let s = s+1;
+        }
+        return initial;
+    }
+
+    method boolean keyCheck(String pathe, char key, int move){
+        var int len,k;
+        var boolean check;
+        let len = pathe.length();
+        let k = 0;
+        do Output.moveCursor(19,32);
+        while((k < len) & ~check){
+            if(pathe.charAt(k)=key){
+                let check = true;
+                if(pathe.charAt(k)=pathe.charAt(0)){
+                    if(move=0){
+                        do Output.printString("     You Won, Yayyy ;)         ");
+                        let pathe = pathe.appendChar(pathe.charAt(0));
+                        do SplashScreen.winScreen(pathe);
+                        let won = true;
+                        let quit = true;
+                    }else{
+                        do Output.printString("        You lost :(            ");
+                        do SplashScreen.lossScreen();
+                        let won =false;
+                        let quit = true;
+                    }
+                    return check;
+                }
+            }else{
+                let check = false;
+            }
+            let k = k+1;
+        }
+        if(check){
+            do Output.printString("  Already visited the point :| ");
+        }else{
+            do Output.printString("     Playing Nice, Yayyyy :)   ");
+        }
+        return check;
+    }
+
+    method void printInfo(int moves, String path){
+        do Output.moveCursor(14,49);
+        do Output.printString("   ");
+        do Output.moveCursor(14,50);
+        do Output.printInt(moves);
+        do Output.moveCursor(17,32);
+        do Output.printString(path);
+        return;
+    }
+
+    method void drawPartition() {
+        var int j;
+        let j = 0;
+        while( j < 64){
+            do Output.moveCursor(0,j);
+            do Output.printChar(35);
+            do Output.moveCursor(22,j);
+            do Output.printChar(35);
+            let j = j + 1;
+        }
+        let j = 1;
+        while(j < 22) {
+            do Output.moveCursor(j,0);
+            do Output.printChar(35);
+            do Output.moveCursor(j,31);
+            do Output.printChar(35);
+            do Output.moveCursor(j,63);
+            do Output.printChar(35);
+            let j = j + 1;
+        }
+        do Output.moveCursor(2,32);
+        do Output.printString("THE              _");
+        do Output.moveCursor(3,32);
+        do Output.printString("| |             (_)");
+        do Output.moveCursor(4,32);
+        do Output.printString("| | __  __   __  _  ___ ____");
+        do Output.moveCursor(5,32);
+        do Output.printString("| |/ _)/  \\ /__)| |(__ |  _ \\");
+        do Output.moveCursor(6,32);
+        do Output.printString("| ( (_| || |__ || |/ _ | | | |");
+        do Output.moveCursor(7,32);
+        do Output.printString("|_|\\__)\\__/(__/ |_|\\___|_| |_|");
+        do Output.moveCursor(10,37);
+        do Output.printString("Press key A-T to play!");
+        do Output.moveCursor(11,34);
+        do Output.printString("Press any other key to quit!");
+        do Output.moveCursor(13,32);
+        do Output.printString("+++++++++++++++++++++++++++++++");
+        do Output.moveCursor(14,32);
+        do Output.printString(" Moves remaining:");
+        do Output.moveCursor(15,32);
+        do Output.printString("+++++++++++++++++++++++++++++++");
+        do Output.moveCursor(16,32);
+        do Output.printString(" Hamiltonian Cycle:-");
+        do Output.moveCursor(18,32);
+        do Output.printString("+++++++++++++++++++++++++++++++");
+        do Output.moveCursor(8,57);
+        do Output.printString("GAME");
+        do Output.moveCursor(21,47);
+        do Output.printString("(c) 2020 Avinal");
+        return;
+    }
+
+    method boolean playKey(int key) {
+        if(key > 64){
+            if(key < 85) {
+                return true;
+            }else {
+                return false;
+            }
+        }else {
+            return false;
+        }
+    }
+    
+    method void dispose(){
+        do Screen.clearScreen();
+        do icosian.dispose();
+        do Memory.deAlloc(this);
+        return;
+    } 
+}

@@ -1,0 +1,62 @@
+class PointVector {
+    field Array linearVector;
+    field Array neighbours;
+    field Array charPos;
+    field int height;
+
+    constructor PointVector new(int hgt) {
+        var int i, elements;
+        let i = 0;
+        let height = hgt;
+        let elements = 2 * hgt;
+        let linearVector = Array.new(elements);
+        let charPos = Array.new(elements);
+        let elements = 3 * hgt;
+        let neighbours = Array.new(elements);
+        return this;
+    }
+
+    method void set(int point, int x, int y, int n1, int n2, int n3, int c1, int c2) {
+        let linearVector[point * 2] = x;
+        let linearVector[point * 2 + 1] = y;
+        let charPos[point * 2] = c1;
+        let charPos[point * 2 + 1] = c2;
+        let neighbours[point * 3] = n1;
+        let neighbours[point * 3 + 1] = n2;
+        let neighbours[point * 3 + 2] = n3;
+        return;
+    }
+
+    method Array getPoint(int point) {
+        var Array ret;
+        let ret = Array.new(2);
+        let ret[0] = linearVector[point * 2];
+        let ret[1] = linearVector[point * 2 + 1];
+        return ret;
+    }
+
+    method Array getCharPos(int point) {
+        var Array ret;
+        let ret = Array.new(2);
+        let ret[0] = charPos[point * 2];
+        let ret[1] = charPos[point * 2 + 1];
+        return ret;
+    }
+
+    method Array getNeighbours(int point) {
+        var Array ret;
+        let ret = Array.new(3);
+        let ret[0] = neighbours[point * 3];
+        let ret[1] = neighbours[point * 3 + 1];
+        let ret[2] = neighbours[point * 3 + 2];
+        return ret;
+    }
+
+    method void dispose(){
+        do linearVector.dispose();
+        do neighbours.dispose();
+        do charPos.dispose();
+        do Memory.deAlloc(this);
+        return; 
+    }
+}

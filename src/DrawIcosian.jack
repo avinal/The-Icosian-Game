@@ -1,0 +1,146 @@
+class DrawIcosian {
+    field PointVector points;
+
+    constructor DrawIcosian new() {
+        let points = PointVector.new(20);
+
+        do points.set(0,65,31,1,7,4,8,1);           // A
+        do points.set(1,192,31,0,2,9,24,1);         // B
+        do points.set(2,231,152,3,1,11,30,13);      // C
+        do points.set(3,128,227,2,4,13,16,21);      // D
+        do points.set(4,25,152,0,5,3,2,13);         // E
+        do points.set(5,60,141,4,14,6,9,12);        // F
+        do points.set(6,80,103,5,7,16,8,9);         // G
+        do points.set(7,86,60,6,8,0,11,6);          // H
+        do points.set(8,128,68,7,9,17,16,5);        // I
+        do points.set(9,171,60,1,8,10,20,6);        // J
+        do points.set(10,177,103,9,11,18,23,9);     // K
+        do points.set(11,197,141,10,12,2,23,12);    // L
+        do points.set(12,158,160,11,13,19,20,15);   // M
+        do points.set(13,128,191,12,14,3,16,16);    // N
+        do points.set(14,98,160,13,5,15,12,15);     // O
+        do points.set(15,109,144,14,16,19,14,12);   // P
+        do points.set(16,98,109,15,17,6,13,10);     // Q
+        do points.set(17,128,81,16,18,8,16,8);      // R
+        do points.set(18,159,109,17,19,10,18,10);   // S
+        do points.set(19,147,144,15,18,12,17,12);   // T
+        return this;
+    }
+
+    method void plotPoints(boolean dc) {
+        var int i;
+        var Array pos, charPos;
+        let i = 0;
+        while(i < 20) {
+            let pos = points.getPoint(i);
+            do Screen.drawCircle(pos[0],pos[1],3);
+            if(dc){
+                 let charPos = points.getCharPos(i);
+                 do Output.moveCursor(charPos[1],charPos[0]);
+                 do Output.printChar(65 + i);
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void plotLine(int pointa, int pointb) {
+        var Array aa;
+        var Array bb;
+        let aa = points.getPoint(pointa);
+        let bb = points.getPoint(pointb);
+        do Screen.drawLine(aa[0],aa[1],bb[0],bb[1]);
+        return;
+    }
+
+
+    method void drawDashedLine(int pointa, int pointb) {
+        var Array aa, bb;
+        let aa = points.getPoint(pointa);
+        let bb = points.getPoint(pointb);
+        do drawMid(aa[0],aa[1],bb[0],bb[1]);
+        return;
+    }
+
+    method void draw() {
+        var int j;
+        do plotPoints(true);
+        let j = 0;
+        while(j < 19) {
+            do drawDashedLine(j, j+1);
+            let j = j + 1;
+        }
+        do drawDashedLine(0,4);
+        do drawDashedLine(0,7);
+        do drawDashedLine(1,9);
+        do drawDashedLine(2,11);
+        do drawDashedLine(3,13);
+        do drawDashedLine(8,17);
+        do drawDashedLine(5,14);
+        do drawDashedLine(12,19);
+        do drawDashedLine(10,18);
+        do drawDashedLine(6,16);
+        do drawDashedLine(15,19);
+        return;
+    }
+
+    method boolean isNeighbour(int p1, int p2) {
+        var Array check;
+        let check = points.getNeighbours(p1);
+        if(check[0] = p2) {
+            return true;
+        }else {
+            if(check[1] = p2) {
+                return true;
+            }else {
+                if(check[2] = p2) {
+                    return true;
+                }else {
+                    return false;
+                }
+            }
+        }
+    }
+
+    method void drawMid(int x1, int y1, int x2, int y2) {
+        var int midx;
+        var int midy;
+        var int len;
+        let len = length(x1,y1,x2,y2);
+        if(len < 10){
+            return;
+        }
+        
+        let midx = (x1 + x2)/2;
+        let midy = (y1 + y2)/2;
+        do Screen.drawPixel(midx ,midy);
+        do drawMid(x1,y1,midx,midy);
+        do drawMid(midx,midy,x2,y2);
+        return;
+    }
+
+    method int length(int x1, int y1, int x2, int y2) {
+        var int dx, dy;
+        var int len;
+        if(x1 > x2) {
+            let dx = x1 - x2;
+        }else {
+            let dx = x2 - x1; 
+        }
+
+        if(y1 > y2) {
+            let dy = y1 - y2;
+        }else {
+            let dy = y2 - y1;      
+        }
+
+        let len = Math.sqrt((dx*dx)+(dy*dy));
+        return len;
+    }
+
+    method void dispose(){
+        do points.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}

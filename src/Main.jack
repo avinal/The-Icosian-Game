@@ -1,0 +1,25 @@
+class Main {
+    function void main() {
+        var IcosianGame game;
+        var int key,key2;
+        do SplashScreen.entryScreen();
+        while(key=0){
+            let key = Keyboard.keyPressed();
+        }
+        let key2 = key;
+        do Screen.clearScreen();
+        let key = key/14;
+        let key = key2 - (key*14);
+        let key2 = 0;
+        do SplashScreen.ruleScreen();
+        while(key2=0){
+            let key2 = Keyboard.keyPressed();
+        }
+        do Screen.clearScreen();
+        let game = IcosianGame.new(key);
+        do game.run();
+        do game.dispose();
+        return;
+    }
+
+}

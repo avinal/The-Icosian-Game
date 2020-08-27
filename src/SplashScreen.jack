@@ -1,0 +1,102 @@
+class SplashScreen {
+    function void entryScreen(){
+        do Output.printString(" ___");
+        do Output.println();
+        do Output.printString("  | |_  _");
+        do Output.println();
+        do Output.printString("  | | |(/_");
+        do Output.println();
+        do Output.printString("  __.   _____.  _____.       _____. __.     __.       __   __.");
+        do Output.println();
+        do Output.printString(" |  |  /     | /  __  \\     /     ||  |    /   \\     |  \\ |  |");
+        do Output.println();
+        do Output.printString(" |  | |  ,---'|  |  |  |   |  (---`|  |   /  ^  \\    |   \\|  |");
+        do Output.println();
+        do Output.printString(" |  | |  |    |  |  |  |    \\  \\   |  |  /  /_\\  \\   |  . `  |");
+        do Output.println();
+        do Output.printString(" |  | |  `---.|  `--'  |.----)  |  |  | /  _____  \\  |  |\\   |");
+        do Output.println();
+        do Output.printString(" |__|  \\_____| \\______/ |______/   |__|/__/     \\__\\ |__| \\__|");
+        do Output.moveCursor(9,45);
+        do Output.printString("  __");
+        do Output.moveCursor(10,45);
+        do Output.printString(" /__ _.._ _  _ ");
+        do Output.moveCursor(11,45);
+        do Output.printString(" \\_|(_|| | |(/_");
+        do Output.println();
+        do Output.println();
+        do Output.printString(" The Icosian Game v1.0");
+        do Output.println();
+        do Output.printString(" Peer-Graded Assignment for Nand2Tetris Part-II Project-09");
+        do Output.println();
+        do Output.printString(" (c) 2020 Avinal");
+        do Output.println();
+        do Output.println();
+        do Output.printString(" Source Code is available at:-");
+        do Output.println();
+        do Output.printString("");
+        do Output.println();
+        do Output.printString("                  Press any Key to Start !                     ");
+        return;
+    }
+
+    function void ruleScreen(){
+        do Output.moveCursor(0,0);
+        do Output.println();
+        do Output.printString("What is \" The Icosian Game\" ?");
+        do Output.println();
+        do Output.printString("The icosian game is a mathematical game invented in 1857 by     William Rowan Hamilton. The game's objective is finding a       Hamiltonian cycle along the edges of a dodecahedron such that   every vertex is visited a single time, and the ending point is  the same as the starting point.");
+        do Output.println();
+        do Output.println();
+        do Output.printString("How to play The Icosian Game ?");
+        do Output.println();
+        do Output.printString("The probable paths are shown by dotted lines between two points.Five consecutive initial points are given. Your goal is to coverall the points of the figure with three rules.");
+        do Output.println();
+        do Output.printString("1. Starting from last point shown in the Hamiltonian Cycle box  ");
+        do Output.printString("you can go to any adjacent uncovered point by pressing that key.");
+        do Output.println();
+        do Output.printString("2. Your goal is to cover all points and reach to the initial    point.");
+        do Output.println();
+        do Output.printString("3. You cannot undo any path covered and can't use same points   again.");
+        do Output.println();
+        do Output.println();
+        do Output.printString("                  Press any Key to Start !                     ");
+        return;
+    }
+
+    function void lossScreen(){
+        do Screen.clearScreen();
+        do Output.moveCursor(10,17);
+        do Output.printString(" \\_/ _        |   _   _ _|_");
+        do Output.moveCursor(11,17);
+        do Output.printString("  | (_) |_|   |_ (_) _>  |_");
+        do Sys.wait(5000);
+        return;
+    }
+
+    function void winScreen(String path){
+        var DrawIcosian icon;
+        var int i;
+        var char p,q;
+        do Screen.clearScreen();
+        let icon = DrawIcosian.new();
+        let i = 0;
+        while( i < 20){
+            let p = path.charAt(i);
+            let q = path.charAt(i+1);
+            let p = p-65;
+            let q = q-65;
+            do icon.plotLine(p,q);
+            let i = i+1; 
+        }
+        do Output.moveCursor(8,33);
+        do Output.printString(" \\_/ _        \\    / _  ._");
+        do Output.moveCursor(9,33);
+        do Output.printString("  | (_) |_|    \\/\\/ (_) | |");
+        do Output.moveCursor(11,32);
+        do Output.printString("Here is your Hamiltonian Reward ");
+        do Sys.wait(10000);
+        do icon.dispose();
+        return;
+    }
+}
