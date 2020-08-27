@@ -1,21 +1,32 @@
+/**
+* Main class controls the execution of the program.
+*/
 class Main {
     function void main() {
         var IcosianGame game;
         var int key,key2;
+
+        // Entry screen
         do SplashScreen.entryScreen();
         while(key=0){
             let key = Keyboard.keyPressed();
         }
+        // Alternative to random seeding, works by capturing the key
+        // pressed by the user and convertig to usuable seed.
         let key2 = key;
         do Screen.clearScreen();
         let key = key/14;
         let key = key2 - (key*14);
         let key2 = 0;
+
+        // Rules of the games
         do SplashScreen.ruleScreen();
         while(key2=0){
             let key2 = Keyboard.keyPressed();
         }
         do Screen.clearScreen();
+
+        // The game runs now
         let game = IcosianGame.new(key);
         do game.run();
         do game.dispose();
