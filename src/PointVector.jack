@@ -1,9 +1,20 @@
+/**
+* This class stores the data realted to the points.
+* Three types of data is stored, number of points, 
+* coordinates of the points, cordinates of character
+* name of the point and the 3 neibours of the points.
+*/
 class PointVector {
-    field Array linearVector;
-    field Array neighbours;
-    field Array charPos;
-    field int height;
+    field Array linearVector; // Matrix stored as linear array.
+    field Array neighbours;   // 3 neighbours of each point
+    field Array charPos;      // position of label of each point
+    field int height;         // number of points
 
+    /**
+    * Creates a new PointVector class and initializes the 
+    * field variables.
+    * hgt - number od points.
+    */
     constructor PointVector new(int hgt) {
         var int i, elements;
         let i = 0;
@@ -16,6 +27,13 @@ class PointVector {
         return this;
     }
 
+    /**
+    * Initializes the object with data. Uses linear array to form matrix.
+    * point - serial number of point
+    * x,y - coordinates of the point
+    * n1,n2,n3 - 3 neighbours of a point
+    * c1,c2 - position of label in row and col
+    */
     method void set(int point, int x, int y, int n1, int n2, int n3, int c1, int c2) {
         let linearVector[point * 2] = x;
         let linearVector[point * 2 + 1] = y;
@@ -27,6 +45,10 @@ class PointVector {
         return;
     }
 
+    /**
+    * Returns the coordinates of the requested point.
+    * point - serial number of point
+    */ 
     method Array getPoint(int point) {
         var Array ret;
         let ret = Array.new(2);
@@ -35,6 +57,10 @@ class PointVector {
         return ret;
     }
 
+    /**
+    * Returns the label position in rows and cols
+    * point - serial number of point
+    */
     method Array getCharPos(int point) {
         var Array ret;
         let ret = Array.new(2);
@@ -43,6 +69,10 @@ class PointVector {
         return ret;
     }
 
+    /**
+    * Returns 3 nearest neighbour of a point.
+    * point - serial number of point
+    */
     method Array getNeighbours(int point) {
         var Array ret;
         let ret = Array.new(3);
@@ -52,6 +82,9 @@ class PointVector {
         return ret;
     }
 
+    /**
+    * Destructor of the class, frees memory.
+    */
     method void dispose(){
         do linearVector.dispose();
         do neighbours.dispose();
